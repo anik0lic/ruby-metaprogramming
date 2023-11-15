@@ -21,8 +21,8 @@ t = Table.new("1-a1rlP_3fkneVTSDBto7ewW5snB8pRxSysw8HlQnz1M", 0)
 # p t.prvaKolona.sum
 # p t.prvaKolona.avg
 
-t.each {|row| p row}
-# p t.indeks.rn11522
+# t.each {|row| p row}
+p t.indeks.rn11522
 
 # p t.prvaKolona.map { |cell| cell+=1 }
 # p t.prvaKolona.select { |num|  num.even? }

@@ -4,7 +4,7 @@ class Table
     include Enumerable
 
     attr_accessor :spreadsheet_id, :worksheet, :worksheet_number, :headers
-  
+
     def initialize(spreadsheet_id, worksheet_number)
       @spreadsheet_id = spreadsheet_id
       @worksheet_number = worksheet_number
@@ -31,9 +31,9 @@ class Table
 
     def [](header)
         header_index = headers.index(header)
-      
+
         return nil unless header_index
-      
+
         column = worksheet.rows[1..-1].map { |row| row[header_index] }
         Column.new(column, worksheet, header_index)
     end
@@ -43,7 +43,7 @@ class Table
         header_index = headers.index(modified_string)
 
         return nil unless header_index
-        
+
         column = worksheet.rows[1..-1].map { |row| row[header_index] }
         Column.new(column, worksheet, header_index)
     end
@@ -53,6 +53,23 @@ class Table
             row_str = row.join(", ")
             yield(row_str)
         end
+    end
+
+    # def sum_tables(t1, t2)
+    #     raise 'Tables must have the same dimensions' unless t1.size == t2.size
+
+    #     result = t1.dup  # Create a copy to avoid modifying the original table
+
+    #     t1.each_with_index do |cell, index|
+    #     result[index] = cell + t2[index]
+
+    #     result
+    # end
+
+    private
+
+    def check_table
+        worksheet[row_index + 1, header_index + 1] = value.to_s unless value.nil?
     end
 end
 
@@ -66,11 +83,11 @@ class Column
       @worksheet = worksheet
       @header_index = header_index
     end
-  
+
     def [](index)
       column[index - 1]
     end
-  
+
     def []=(index, value)
       worksheet[index + 1, header_index + 1] = value
       column[index + 1] = value
@@ -121,9 +138,9 @@ class Column
             yield(n, row)
         end
     end
-  
+
     private
-  
+
     def reload_column
       column = worksheet.rows[1..-1].map { |row| row[header_index] }
     end
