@@ -11,25 +11,28 @@ require_relative 'table'
 # end
 
 t = Table.new("1-a1rlP_3fkneVTSDBto7ewW5snB8pRxSysw8HlQnz1M", 0)
+t2 = Table.new("1-a1rlP_3fkneVTSDBto7ewW5snB8pRxSysw8HlQnz1M", 1)
+
+# t.print
 
 # t.row(2)
+# t.each {|row| p row}
+
 # p t["PrvaKolona"].to_s
 # p t["PrvaKolona"][2]
 # p t["Prva Kolona"][1] = 3
 # p t["Prva Kolona"].to_s
+
 # p t.prvaKolona.to_s
 # p t.prvaKolona.sum
 # p t.prvaKolona.avg
 
-# t.each {|row| p row}
-p t.indeks.rn11522
+# p t.indeks.rn11522
 
 # p t.prvaKolona.map { |cell| cell+=1 }
 # p t.prvaKolona.select { |num|  num.even? }
 # p t.prvaKolona.reduce(1) { |sum, n| sum + n }
 
-# t.print
+# t.sum_tables(t2)
+# t.minus_tables(t2)
 
-#Headers: ["adsgsdag", "dsagasdg"]
-# Row: ["1", "2"]
-# Row: ["1", "2"]

@@ -3,7 +3,7 @@ require "google_drive"
 class Table
     include Enumerable
 
-    attr_accessor :spreadsheet_id, :worksheet, :worksheet_number, :headers
+    attr_accessor :spreadsheet_id, :worksheet, :worksheet_number, :headers, :
 
     def initialize(spreadsheet_id, worksheet_number)
       @spreadsheet_id = spreadsheet_id
@@ -55,21 +55,30 @@ class Table
         end
     end
 
-    # def sum_tables(t1, t2)
-    #     raise 'Tables must have the same dimensions' unless t1.size == t2.size
+    def sum_tables(t2)
+        raise 'Tables must have the same dimensions' unless self.headers == t2.headers
 
-    #     result = t1.dup  # Create a copy to avoid modifying the original table
+        result = worksheet.dup 
 
-    #     t1.each_with_index do |cell, index|
-    #     result[index] = cell + t2[index]
+        worksheet.rows[1..-1].each_with_index do |row, i|
+            new_row = row.map.with_index do |cell, j|
+                cell.to_f + t2.worksheet.rows[i][j].to_f
+            end
+            worksheet.rows[i] = new_row
+        end
+    end
 
-    #     result
-    # end
+    def minus_tables(t2)
+        raise 'Tables must have the same dimensions' unless self.headers == t2.headers
 
-    private
+        result = worksheet.dup 
 
-    def check_table
-        worksheet[row_index + 1, header_index + 1] = value.to_s unless value.nil?
+        worksheet.rows[1..-1].each_with_index do |row, i|
+            new_row = row.map.with_index do |cell, j|
+                cell.to_f - t2.worksheet.rows[i][j].to_f
+            end
+            worksheet.rows[i] = new_row
+        end
     end
 end
 
@@ -103,7 +112,9 @@ class Column
     def avg
         num_column = column.map(&:to_i)
         values = num_column.compact
-        values.empty? ? nil : values.sum / values.length.to_f
+        none_zero = values.reject { |num| num.zero? }
+
+        none_zero.empty? ? nil : none_zero.sum / none_zero.length.to_f
     end
 
     def method_missing(method_name, *args)
